@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>關於學會 - 中華民國資訊管理學會</title>
+    
+    <style>
+        /* 共用主題變數 */
+        :root {
+            --bg-color: #f4f7f6;
+            --nav-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --primary-color: #0056b3;
+            --primary-hover: #004494;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --nav-bg: #1e1e1e;
+            --text-main: #f0f0f0;
+            --text-muted: #aaaaaa;
+            --primary-color: #4da3ff;
+            --primary-hover: #73b8ff;
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: '微軟正黑體', 'Noto Sans TC', sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* 導覽列 */
+        header {
+            background-color: var(--nav-bg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .logo span {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: bold;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary-color);
+        }
+
+        .btn-icon {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            margin-right: 15px;
+            color: #FFD700;
+        }
+
+          .btn-primary, .btn-large {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover, .btn-large:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* 頁面標題 */
+        .page-header {
+            background: linear-gradient(135deg, #002d5e, var(--primary-color));
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .page-header h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        /* 關於我們內容區塊 */
+        .about-section {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .about-row {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+
+        /* 讓偶數列的圖文反轉排版 */
+        .about-row:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-text h3 {
+            color: var(--primary-color);
+            font-size: 24px;
+            margin-bottom: 15px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        /* 標題底下的裝飾線 */
+        .about-text h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+
+        .about-text p {
+            color: var(--text-muted);
+            font-size: 16px;
+            text-align: justify;
+        }
+
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+            height: 250px;
+            background-color: var(--border-color);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-weight: bold;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        /* 組織架構區塊 (人物卡片) */
+        .org-header {
+            text-align: center;
+            margin: 60px 0 30px;
+        }
+
+        .org-header h3 {
+            color: var(--text-main);
+            font-size: 28px;
+        }
+
+        .org-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .member-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px 15px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .member-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .member-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--text-main);
+            margin-bottom: 5px;
+        }
+
+        .member-title {
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+
+        /* 頁尾 */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--nav-bg);
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">CSIM <span>資訊管理學會</span></a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">首頁</a></li>
+                    <li><a href="about.html" class="active">關於學會</a></li>
+                    <li><a href="departments.html">各校資管</a></li>
+                    <li><a href="publications.html">研究出版</a></li>
+                    <li><a href="contact.html">聯絡我們</a></li>
+                    <li><a href="galleries.html">活動花絮</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <button id="darkModeToggle" class="btn-icon">🌙</button>
+                <a href="login.html">
+                    <button class="btn-primary">登入 / 註冊</button>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <h2>關於學會</h2>
+        <p>致力於提昇我國資訊管理學術研究水準，促進產官學界之交流</p>
+    </div>
+
+    <section class="about-section">
+        
+        <div class="about-row">
+            <div class="about-text">
+                <h3>學會宗旨與願景</h3>
+                <p>中華民國資訊管理學會成立之目的，在於推動資訊管理學術研究與實務應用。我們積極鼓勵跨領域專業整合（如：資訊管理與會計、數據分析與金融科技等），期望打破傳統學科界線，培育具備全面性商業思維與技術底蘊的數位人才，為產業界提供源源不絕的創新動能。</p>
+            </div>
+            <div class="about-image">
+                [ 願景意象圖預留位置 ]
+            </div>
+        </div>
+
+        <div class="about-row">
+            <div class="about-text">
+                <h3>推動產學合作</h3>
+                <p>自成立以來，本學會定期舉辦各項學術研討會、論文發表與實務講座。我們不僅搭建了全國各大專院校資管系所的交流平台，更積極媒合業界資源，讓學術理論得以在企業場域中落地驗證，有效縮短產學落差。</p>
+            </div>
+            <div class="about-image">
+                [ 研討會照片預留位置 ]
+            </div>
+        </div>
+
+        <div class="org-header">
+            <h3>理監事會與組織架構</h3>
+        </div>
+        <div class="org-grid">
+            <div class="member-card">
+                <div class="avatar">理</div>
+                <div class="member-name">理事長</div>
+                <div class="member-title">統籌學會營運</div>
+            </div>
+            <div class="member-card">
+                <div class="avatar">副</div>
+                <div class="member-name">副理事長</div>
+                <div class="member-title">協助學務發展</div>
+            </div>
+            <div class="member-card">
+                <div class="avatar">秘</div>
+                <div class="member-name">秘書長</div>
+                <div class="member-title">行政與跨界聯繫</div>
+            </div>
+            <div class="member-card">
+                <div class="avatar">監</div>
+                <div class="member-name">常務監事</div>
+                <div class="member-title">會務督導與審核</div>
+            </div>
+        </div>
+
+    </section>
+
+    <footer>
+        <p>會址：251301 新北市淡水區英專路151號（資管系辦公室）</p>
+        <p>e-mail：csim.service@gmail.com</p>
+        <p>&copy; 2026 中華民國資訊管理學會 CSIM All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                darkModeToggle.textContent = '☀️';
+            }
+
+            darkModeToggle.addEventListener('click', () => {
+                const currentTheme = document.body.getAttribute('data-theme');
+                if (currentTheme === 'dark') {
+                    document.body.removeAttribute('data-theme');
+                    darkModeToggle.textContent = '🌙'; 
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.body.setAttribute('data-theme', 'dark');
+                    darkModeToggle.textContent = '☀️'; 
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

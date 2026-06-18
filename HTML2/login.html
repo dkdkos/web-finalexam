@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入與註冊 - 中華民國資訊管理學會</title>
+    
+    <style>
+        /* 共用主題變數 */
+        :root {
+            --bg-color: #f4f7f6;
+            --nav-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --primary-color: #0056b3;
+            --primary-hover: #004494;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --input-bg: #ffffff;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --nav-bg: #1e1e1e;
+            --text-main: #f0f0f0;
+            --text-muted: #aaaaaa;
+            --primary-color: #4da3ff;
+            --primary-hover: #73b8ff;
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+            --input-bg: #2a2a2a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: '微軟正黑體', 'Noto Sans TC', sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* 讓頁尾能固定在最下方 */
+        }
+
+        /* 導覽列 */
+        header {
+            background-color: var(--nav-bg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .logo span {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: bold;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary-color);
+        }
+
+        .btn-icon {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            margin-right: 15px;
+            color: #FFD700;
+        }
+
+         .btn-primary, .btn-large {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover, .btn-large:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* 登入/註冊區塊排版 */
+        .auth-wrapper {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .auth-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            width: 100%;
+            max-width: 400px;
+            overflow: hidden;
+        }
+
+        /* 頁籤切換設計 */
+        .auth-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 15px 0;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--text-muted);
+            cursor: pointer;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            background-color: rgba(0, 86, 179, 0.05);
+        }
+
+        /* 表單內容區塊 */
+        .auth-form-container {
+            padding: 30px;
+        }
+
+        .auth-form {
+            display: none; /* 預設隱藏，用 JS 控制顯示 */
+            animation: fadeIn 0.4s ease;
+        }
+
+        .auth-form.active {
+            display: block; /* 顯示有 active class 的表單 */
+        }
+
+        /* 淡入動畫 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--text-main);
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            font-size: 16px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(0, 86, 179, 0.3);
+        }
+
+        .forgot-pwd {
+            display: block;
+            text-align: right;
+            margin-top: -10px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .forgot-pwd:hover {
+            text-decoration: underline;
+        }
+
+        .btn-submit {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* 頁尾 */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: var(--nav-bg);
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 導覽列 -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">CSIM <span>資訊管理學會</span></a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">首頁</a></li>
+                    <li><a href="about.html">關於學會</a></li>
+                    <li><a href="departments.html">各校資管</a></li>
+                    <li><a href="publications.html">研究出版</a></li>
+                    <li><a href="contact.html">聯絡我們</a></li>
+                    <li><a href="galleries.html">活動花絮</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <button id="darkModeToggle" class="btn-icon">🌙</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 登入與註冊主區塊 -->
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <!-- 頁籤按鈕 -->
+            <div class="auth-tabs">
+                <button class="tab-btn active" onclick="switchTab('login')">會員登入</button>
+                <button class="tab-btn" onclick="switchTab('register')">註冊帳號</button>
+            </div>
+
+            <div class="auth-form-container">
+                <!-- 登入表單 -->
+                <form id="loginForm" class="auth-form active" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="loginEmail">電子信箱</label>
+                        <input type="email" id="loginEmail" placeholder="請輸入 Email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPwd">密碼</label>
+                        <input type="password" id="loginPwd" placeholder="請輸入密碼" required>
+                    </div>
+                    <a href="#" class="forgot-pwd">忘記密碼？</a>
+                    <button type="submit" class="btn-submit">登入</button>
+                </form>
+
+                <!-- 註冊表單 -->
+                <form id="registerForm" class="auth-form" onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="regName">真實姓名</label>
+                        <input type="text" id="regName" placeholder="請輸入姓名" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">電子信箱</label>
+                        <input type="email" id="regEmail" placeholder="請輸入 Email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPwd">設定密碼</label>
+                        <input type="password" id="regPwd" placeholder="請設定 6 碼以上密碼" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="regPwdConfirm">確認密碼</label>
+                        <input type="password" id="regPwdConfirm" placeholder="請再次輸入密碼" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn-submit">建立帳號</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 頁尾 -->
+    <footer>
+        <p>&copy; 2026 中華民國資訊管理學會 CSIM All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // 深色模式記憶功能
+        document.addEventListener('DOMContentLoaded', () => {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                darkModeToggle.textContent = '☀️';
+            }
+
+            darkModeToggle.addEventListener('click', () => {
+                const currentTheme = document.body.getAttribute('data-theme');
+                if (currentTheme === 'dark') {
+                    document.body.removeAttribute('data-theme');
+                    darkModeToggle.textContent = '🌙'; 
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.body.setAttribute('data-theme', 'dark');
+                    darkModeToggle.textContent = '☀️'; 
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+        });
+
+        // 頁籤切換功能
+        function switchTab(tabName) {
+            // 取得所有按鈕和表單
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const forms = document.querySelectorAll('.auth-form');
+
+            // 移除所有 active 狀態
+            tabBtns.forEach(btn => btn.classList.remove('active'));
+            forms.forEach(form => form.classList.remove('active'));
+
+            // 根據點擊的頁籤加上 active
+            if (tabName === 'login') {
+                tabBtns[0].classList.add('active');
+                document.getElementById('loginForm').classList.add('active');
+            } else {
+                tabBtns[1].classList.add('active');
+                document.getElementById('registerForm').classList.add('active');
+            }
+        }
+
+        // 模擬登入送出
+        function handleLogin(event) {
+            event.preventDefault(); // 防止畫面重新整理
+            alert('期末 Demo 提示：登入成功！歡迎回來。');
+            window.location.href = 'index.html'; // 登入後自動跳轉回首頁
+        }
+
+        // 模擬註冊送出
+        function handleRegister(event) {
+            event.preventDefault();
+            const pwd = document.getElementById('regPwd').value;
+            const confirmPwd = document.getElementById('regPwdConfirm').value;
+
+            // 簡單的密碼確認檢查
+            if (pwd !== confirmPwd) {
+                alert('兩次輸入的密碼不一致，請重新確認！');
+                return;
+            }
+
+            alert('期末 Demo 提示：註冊成功！請使用新帳號登入。');
+            switchTab('login'); // 註冊完自動切換回登入頁籤
+        }
+    </script>
+</body>
+</html>

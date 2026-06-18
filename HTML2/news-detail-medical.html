@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【研討會】第六屆數位醫療與醫療數據分析國際研討會 - 中華民國資訊管理學會</title>
+    
+    <style>
+        /* 共用主題變數 */
+        :root {
+            --bg-color: #f4f7f6;
+            --nav-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --primary-color: #0056b3;
+            --primary-hover: #004494;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --medical-blue: #00acc1; /* 醫療主題專屬色 */
+            --medical-light: #e0f7fa;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --nav-bg: #1e1e1e;
+            --text-main: #f0f0f0;
+            --text-muted: #aaaaaa;
+            --primary-color: #4da3ff;
+            --primary-hover: #73b8ff;
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+            --medical-blue: #4dd0e1;
+            --medical-light: #00363a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: '微軟正黑體', 'Noto Sans TC', sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 導覽列 */
+        header {
+            background-color: var(--nav-bg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .logo span {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: bold;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-actions a {
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+            border: none !important;
+            padding: 8px 16px !important;
+            border-radius: 5px !important;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-icon {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #FFD700;
+            margin-right: 15px;
+        }
+
+        /* --- 文章內頁專屬排版 --- */
+        .article-wrapper {
+            flex-grow: 1;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .article-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .article-title {
+            font-size: 28px;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .article-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-size: 14px;
+            color: var(--text-muted);
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+
+        .meta-item { display: flex; align-items: center; gap: 5px; }
+        
+        .tag {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        [data-theme="dark"] .tag { background: #1a3c1e; color: #81c784; }
+
+        .article-content {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--text-main);
+        }
+
+        .article-content h3 {
+            color: var(--medical-blue);
+            font-size: 20px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--medical-blue);
+            padding-left: 10px;
+        }
+
+        .article-content p { margin-bottom: 15px; text-align: justify; }
+
+        /* 主辦單位區塊設計 */
+        .sponsors-box {
+            background-color: var(--medical-light);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .sponsors-box h4 {
+            color: var(--medical-blue);
+            margin-bottom: 15px;
+        }
+
+        .sponsor-list {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            color: var(--text-main);
+            font-weight: bold;
+        }
+
+        /* 徵稿主題卡片網格 */
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .topic-card {
+            background: var(--nav-bg);
+            border: 1px solid var(--border-color);
+            border-top: 4px solid var(--medical-blue);
+            border-radius: 6px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .topic-card h4 {
+            color: var(--text-main);
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .topic-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 0;
+            line-height: 1.5;
+        }
+
+        .official-link {
+            display: block;
+            text-align: center;
+            background-color: var(--medical-blue);
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 40px;
+            transition: 0.3s;
+        }
+
+        .official-link:hover {
+            background-color: #00838f;
+            transform: translateY(-2px);
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 30px;
+            text-decoration: none;
+            color: var(--medical-blue);
+            font-weight: bold;
+        }
+        .btn-back:hover { text-decoration: underline; }
+
+        /* 頁尾 */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--nav-bg);
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">CSIM <span>資訊管理學會</span></a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">首頁</a></li>
+                    <li><a href="about.html">關於學會</a></li>
+                    <li><a href="departments.html">各校資管</a></li>
+                    <li><a href="publications.html">研究出版</a></li>
+                    <li><a href="galleries.html">活動花絮</a></li>
+                    <li><a href="contact.html">聯絡我們</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <button id="darkModeToggle" class="btn-icon">🌙</button>
+                <a href="login.html"><button class="btn-primary">登入 / 註冊</button></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="article-wrapper">
+        <div class="breadcrumb">
+            <a href="index.html">首頁</a> &gt; <a href="index.html">最新消息</a> &gt; 研討會
+        </div>
+
+        <div class="article-card">
+            <h1 class="article-title">【徵稿公告】2026 第六屆數位醫療與醫療數據分析國際研討會</h1>
+            
+            <div class="article-meta">
+                <div class="meta-item"><span class="tag">研討會</span></div>
+                <div class="meta-item">📅 發布日期：2026-02-04</div>
+                <div class="meta-item">👤 發布單位：csim</div>
+            </div>
+
+            <div class="article-content">
+                <div class="sponsors-box">
+                    <h4>🤝 聯合主辦單位</h4>
+                    <div class="sponsor-list">
+                        <span>國立高雄科技大學</span>
+                        <span>高雄醫學大學</span>
+                        <span>英國雪菲爾大學 (Univ. of Sheffield)</span>
+                        <span>醫療系統聯盟</span>
+                    </div>
+                </div>
+
+                <h3>壹、研討會簡介</h3>
+                <p>隨著人工智慧與大數據技術在醫療領域的突破性發展，「數位醫療」已成為提升全球醫療品質與效率的關鍵。「2026 第六屆數位醫療與醫療數據分析國際研討會」旨在匯聚國內外醫學界、資訊界與產業界專家，共同探討醫療數據分析的最新趨勢、挑戰與實務應用。</p>
+                <p>本次大會將包含專題演講、產學論壇及學術論文發表，誠摯邀請各界學者、醫師及研究人員踴躍投稿，分享卓越的研究成果。</p>
+
+                <h3>貳、徵稿主題 (Topics of Interest)</h3>
+                <p>本研討會徵求具原創性之學術論文，主題包含但不限於下列領域：</p>
+                
+                <div class="topics-grid">
+                    <div class="topic-card">
+                        <h4>人工智慧與精準醫療</h4>
+                        <p>醫學影像辨識、疾病預測模型、基因數據分析、個人化治療方案演算法。</p>
+                    </div>
+                    <div class="topic-card">
+                        <h4>電子病歷與數據探勘</h4>
+                        <p>自然語言處理(NLP)在醫療紀錄之應用、臨床數據倉儲、病歷結構化技術。</p>
+                    </div>
+                    <div class="topic-card">
+                        <h4>智慧照護與物聯網</h4>
+                        <p>穿戴式醫療裝置、遠距醫療系統、居家高齡照護監控技術、IoMT安全傳輸。</p>
+                    </div>
+                    <div class="topic-card">
+                        <h4>醫療資訊安全與倫理</h4>
+                        <p>病患隱私保護、聯邦學習(Federated Learning)在醫療之應用、醫療區塊鏈。</p>
+                    </div>
+                </div>
+
+                <h3>參、重要時程與地點</h3>
+                <ul style="margin-left: 20px; margin-bottom: 20px;">
+                    <li><strong>論文截稿日期：</strong> 2026 年 6 月 30 日</li>
+                    <li><strong>審查結果通知：</strong> 2026 年 7 月 31 日</li>
+                    <li><strong>會議舉辦日期：</strong> 2026 年 9 月 (詳細日期請見官網)</li>
+                    <li><strong>會議舉辦地點：</strong> 國立高雄科技大學 建工校區</li>
+                </ul>
+
+                <a href="https://www.dha2026.org/" class="official-link">🏥 前往研討會官方網站查看詳細格式與投稿系統</a>
+            </div>
+
+            <a href="index.html" class="btn-back">&larr; 回到首頁消息列表</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>會址：251301 新北市淡水區英專路151號（資管系辦公室）</p>
+        <p>e-mail：csim.service@gmail.com</p>
+        <p>&copy; 2026 中華民國資訊管理學會 CSIM All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                darkModeToggle.textContent = '☀️';
+            }
+            darkModeToggle.addEventListener('click', () => {
+                if (document.body.getAttribute('data-theme') === 'dark') {
+                    document.body.removeAttribute('data-theme');
+                    darkModeToggle.textContent = '🌙'; 
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.body.setAttribute('data-theme', 'dark');
+                    darkModeToggle.textContent = '☀️'; 
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

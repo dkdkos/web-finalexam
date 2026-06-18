@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMP 2015 研討會花絮 - 中華民國資訊管理學會</title>
+    
+    <style>
+        /* 共用主題變數 */
+        :root {
+            --bg-color: #f4f7f6;
+            --nav-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --primary-color: #0056b3;
+            --primary-hover: #004494;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --nav-bg: #1e1e1e;
+            --text-main: #f0f0f0;
+            --text-muted: #aaaaaa;
+            --primary-color: #4da3ff;
+            --primary-hover: #73b8ff;
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: '微軟正黑體', 'Noto Sans TC', sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 導覽列 */
+        header {
+            background-color: var(--nav-bg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .logo span {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: bold;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-actions a {
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+            border: none !important;
+            padding: 8px 16px !important;
+            border-radius: 5px !important;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-icon {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #FFD700;
+            margin-right: 15px;
+        }
+
+        /* --- 相簿內頁主區塊 --- */
+        .album-wrapper {
+            flex-grow: 1;
+            /* 讓版面變得更寬，以適應橫向滑動 */
+            max-width: 100%;
+            margin: 40px 0;
+            padding: 0 40px;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .album-header {
+            max-width: 1200px;
+            margin: 0 auto 30px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 20px;
+        }
+
+        .album-title {
+            font-size: 28px;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+
+        .album-meta {
+            font-size: 15px;
+            color: var(--text-muted);
+        }
+
+        /* 橫向滑動卡片排版 (Horizontal Scroll) */
+        .horizontal-scroll-container {
+            display: flex;
+            gap: 25px;
+            overflow-x: auto;
+            padding: 20px 0 40px;
+            /* 隱藏捲軸但保留滑動功能，增添現代感 */
+            scrollbar-width: none; 
+            -ms-overflow-style: none;
+        }
+
+        .horizontal-scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scroll-card {
+            flex: 0 0 350px; /* 固定寬度，不允許壓縮 */
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .scroll-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary-color);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .scroll-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-tag {
+            display: inline-block;
+            background-color: #e3f2fd;
+            color: #0d47a1;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        [data-theme="dark"] .card-tag {
+            background-color: #1565c0;
+            color: #e3f2fd;
+        }
+
+        .card-content h3 {
+            font-size: 18px;
+            color: var(--text-main);
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .card-content p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        /* 提示滑動的圖示 */
+        .swipe-hint {
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: -10px;
+            margin-bottom: 30px;
+            font-style: italic;
+            font-size: 14px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        .btn-back {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: 0.3s;
+            max-width: 250px;
+            margin: 0 auto;
+        }
+
+        .btn-back:hover {
+            background: var(--primary-hover);
+        }
+
+        /* 頁尾 */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--nav-bg);
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">CSIM <span>資訊管理學會</span></a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">首頁</a></li>
+                    <li><a href="about.html">關於學會</a></li>
+                    <li><a href="departments.html">各校資管</a></li>
+                    <li><a href="publications.html">研究出版</a></li>
+                    <li><a href="contact.html">聯絡我們</a></li>
+                    <li><a href="galleries.html">活動花絮</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <button id="darkModeToggle" class="btn-icon">🌙</button>
+                <a href="login.html"><button class="btn-primary">登入 / 註冊</button></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="album-wrapper">
+        <div class="breadcrumb">
+            <a href="index.html">首頁</a> &gt; <a href="galleries.html">活動花絮</a> &gt; IMP 2015
+        </div>
+
+        <div class="album-header">
+            <h1 class="album-title">第 21 屆國際資訊管理暨實務研討會 (IMP 2015)，國立勤益科技大學</h1>
+            <div class="album-meta">📅 日期：2015 年 11 月 27 日 | 🏫 主辦單位：國立勤益科技大學 資訊管理系</div>
+        </div>
+
+        <div class="swipe-hint">← 💡 提示：按住 Shift + 滾輪 或在觸控板上左右滑動以查看更多照片 →</div>
+
+        <div class="horizontal-scroll-container">
+            
+            <div class="scroll-card">
+                <img src="https://www.csim.org.tw/sites/default/files/2015-11-27_16.31.32.jpg" alt="大會開幕">
+                <div class="card-content">
+                    <span class="card-tag">開幕儀式</span>
+                    <h3>勤益科大校長致歡迎詞</h3>
+                    <p>研討會盛大開幕，由主辦單位勤益科技大學校長及資管學會理事長共同致詞，期許透過本次大會深化中台灣的產學合作鏈結。</p>
+                </div>
+            </div>
+<!-- 
+            <div class="scroll-card">
+                <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=600&q=80" alt="專題演講">
+                <div class="card-content">
+                    <span class="card-tag">Keynote 演講</span>
+                    <h3>產業升級與物聯網應用實務</h3>
+                    <p>邀請科技業知名高階主管擔任 Keynote Speaker，分享智慧製造與工業 4.0 浪潮下的資訊管理實務與挑戰。</p>
+                </div>
+            </div>
+
+            <div class="scroll-card">
+                <img src="https://images.unsplash.com/photo-1558403194-611308249627?auto=format&fit=crop&w=600&q=80" alt="實務專案展示">
+                <div class="card-content">
+                    <span class="card-tag">產學展示區</span>
+                    <h3>資訊實務專題成果聯展</h3>
+                    <p>會場外特別設立產學合作與學生實務專題展示區，透過海報與實機操作，展現資管系所學生解決實際商業問題的軟實力。</p>
+                </div>
+            </div>
+
+            <div class="scroll-card">
+                <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80" alt="分組研討">
+                <div class="card-content">
+                    <span class="card-tag">論文發表</span>
+                    <h3>電子商務與行動運算分組</h3>
+                    <p>各場次的平行分組會議中，學者與研究生針對行動商務、企業資源規劃(ERP)及資訊安全等實務議題進行深入的口頭發表與問答。</p>
+                </div>
+            </div>
+
+            <div class="scroll-card">
+                <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=600&q=80" alt="交流茶敘">
+                <div class="card-content">
+                    <span class="card-tag">交流茶敘</span>
+                    <h3>中場休息與意見交流</h3>
+                    <p>與會貴賓在茶敘時間熱絡交談，不僅促進了學術界的經驗傳承，也為未來的跨校與產學合作奠定良好基礎。</p>
+                </div> -->
+            </div>
+
+        </div> <a href="galleries.html" class="btn-back">返回活動花絮列表</a>
+    </div>
+
+    <footer>
+        <p>會址：251301 新北市淡水區英專路151號（資管系辦公室）</p>
+        <p>e-mail：csim.service@gmail.com</p>
+        <p>&copy; 2026 中華民國資訊管理學會 CSIM All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // 深色模式功能
+        document.addEventListener('DOMContentLoaded', () => {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                darkModeToggle.textContent = '☀️';
+            }
+            darkModeToggle.addEventListener('click', () => {
+                if (document.body.getAttribute('data-theme') === 'dark') {
+                    document.body.removeAttribute('data-theme');
+                    darkModeToggle.textContent = '🌙'; 
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.body.setAttribute('data-theme', 'dark');
+                    darkModeToggle.textContent = '☀️'; 
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

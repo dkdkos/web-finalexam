@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第22屆海峽兩岸資訊管理研討會 相簿 - 中華民國資訊管理學會</title>
+    
+    <style>
+        /* 共用主題變數 */
+        :root {
+            --bg-color: #f4f7f6;
+            --nav-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --primary-color: #0056b3;
+            --primary-hover: #004494;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --nav-bg: #1e1e1e;
+            --text-main: #f0f0f0;
+            --text-muted: #aaaaaa;
+            --primary-color: #4da3ff;
+            --primary-hover: #73b8ff;
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: '微軟正黑體', 'Noto Sans TC', sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 導覽列 */
+        header {
+            background-color: var(--nav-bg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .logo span {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: bold;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-actions a {
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+            border: none !important;
+            padding: 8px 16px !important;
+            border-radius: 5px !important;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-icon {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #FFD700;
+            margin-right: 15px;
+        }
+
+        /* --- 相簿內頁主區塊 --- */
+        .album-wrapper {
+            flex-grow: 1;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .album-header {
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        .album-title {
+            font-size: 26px;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+
+        .album-meta {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* 照片牆網格排版 */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .photo-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s;
+        }
+
+        /* 滑鼠移上去時照片放大、出現遮罩效果 */
+        .photo-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .photo-caption {
+            padding: 12px;
+            font-size: 14px;
+            color: var(--text-main);
+            border-top: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+        }
+
+        .btn-back {
+            display: inline-block;
+            text-decoration: none;
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-back:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* 頁尾 */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--nav-bg);
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">CSIM <span>資訊管理學會</span></a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">首頁</a></li>
+                    <li><a href="about.html">關於學會</a></li>
+                    <li><a href="departments.html">各校資管</a></li>
+                    <li><a href="publications.html">研究出版</a></li>
+                    <li><a href="contact.html">聯絡我們</a></li>
+                    <li><a href="galleries.html">活動花絮</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <button id="darkModeToggle" class="btn-icon">🌙</button>
+                <a href="login.html"><button class="btn-primary">登入 / 註冊</button></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="album-wrapper">
+        <div class="breadcrumb">
+            <a href="index.html">首頁</a> &gt; <a href="galleries.html">活動花絮</a> &gt; 相簿內頁
+        </div>
+
+        <div class="album-header">
+            <h1 class="album-title">第22屆海峽兩岸資訊管理發展與策略學術研討會</h1>
+            <div class="album-meta">📅 活動日期：2016 年 7 月 29 日 | 📸 照片總數：6 張</div>
+        </div>
+
+        <div class="photo-grid">
+            <div class="photo-item" onclick="openLightbox('開幕典禮大合照')">
+                <img src="https://www.csim.org.tw/sites/default/files/dscn0131_diao_zheng_da_xiao_.jpg" alt="活動照片">
+                <div class="photo-caption">慶祝大會開幕剪彩與貴賓大合照</div>
+            </div>
+            <div class="photo-item" onclick="openLightbox('主題演講現場')">
+                <img src="https://www.csim.org.tw/sites/default/files/dscn0037_diao_zheng_da_xiao_.jpg" alt="活動照片">
+                <div class="photo-caption">兩岸資管學者針對 AI 轉型進行專題主題演講</div>
+            </div>
+            <div class="photo-item" onclick="openLightbox('分組論文發表會場 A')">
+                <img src="https://www.csim.org.tw/sites/default/files/p_20160730_112010_diao_zheng_da_xiao_.jpg" alt="活動照片">
+                <div class="photo-caption">分組報告：大數據與雲端運算應用探討</div>
+            </div>
+            <div class="photo-item" onclick="openLightbox('分組論文發表會場 B')">
+                <img src="https://www.csim.org.tw/sites/default/files/p_20160730_115204_diao_zheng_da_xiao_.jpg" alt="活動照片">
+                <div class="photo-caption">分組報告：電子商務與行動支付持續使用意願</div>
+            </div>
+            <div class="photo-item" onclick="openLightbox('學術交流茶會')">
+                <img src="https://www.csim.org.tw/sites/default/files/p_20160730_120734_diao_zheng_da_xiao_.jpg" alt="活動照片">
+                <div class="photo-caption">茶敘時間：兩岸資管系所主管與教授意見交流</div>
+            </div>
+            <div class="photo-item" onclick="openLightbox('閉幕與頒獎典禮')">
+                <img src="https://www.csim.org.tw/sites/default/files/20160730_175331_diao_zheng_da_xiao_.jpg" alt="活動照片">
+                <div class="photo-caption">最佳論文獎頒獎典禮與圓滿閉幕合影</div>
+            </div>
+        </div>
+
+        <a href="galleries.html" class="btn-back">&larr; 返回活動花絮列表</a>
+    </div>
+
+    <footer>
+        <p>會址：251301 新北市淡水區英專路151號（資管系辦公室）</p>
+        <p>e-mail：csim.service@gmail.com</p>
+        <p>&copy; 2026 中華民國資訊管理學會 CSIM All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // 模擬燈箱放大效果
+        function openLightbox(photoName) {
+            alert(`【互動提示】\n您點擊了：${photoName}\n\n(期末 Demo 備註：實務上這裡會觸發 Lightbox 燈箱特效，在畫面上彈出一個漂亮的黑底大圖高解析度預覽視窗！)`);
+        }
+
+        // 深色模式功能
+        document.addEventListener('DOMContentLoaded', () => {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                darkModeToggle.textContent = '☀️';
+            }
+            darkModeToggle.addEventListener('click', () => {
+                if (document.body.getAttribute('data-theme') === 'dark') {
+                    document.body.removeAttribute('data-theme');
+                    darkModeToggle.textContent = '🌙'; 
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.body.setAttribute('data-theme', 'dark');
+                    darkModeToggle.textContent = '☀️'; 
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

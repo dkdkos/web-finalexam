@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>北區資管系所主管聯席會議 - 中華民國資訊管理學會</title>
+    
+    <style>
+        /* 共用主題變數 */
+        :root {
+            --bg-color: #f4f7f6;
+            --nav-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --primary-color: #0056b3;
+            --primary-hover: #004494;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --timeline-line: #bbdefb;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --nav-bg: #1e1e1e;
+            --text-main: #f0f0f0;
+            --text-muted: #aaaaaa;
+            --primary-color: #4da3ff;
+            --primary-hover: #73b8ff;
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+            --timeline-line: #0d47a1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: '微軟正黑體', 'Noto Sans TC', sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 導覽列 */
+        header {
+            background-color: var(--nav-bg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .logo span {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: bold;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-actions a {
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+            border: none !important;
+            padding: 8px 16px !important;
+            border-radius: 5px !important;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-icon {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #FFD700;
+            margin-right: 15px;
+        }
+
+        /* --- 相簿內頁主區塊 --- */
+        .album-wrapper {
+            flex-grow: 1;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .album-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed var(--border-color);
+        }
+
+        .album-title {
+            font-size: 28px;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+
+        .album-meta {
+            font-size: 15px;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* 時間軸排版 (Timeline) */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto 50px;
+            padding-left: 30px;
+        }
+
+        /* 中間那條垂直線 */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--timeline-line);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        /* 時間軸上的圓點 */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: -38px;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border: 4px solid var(--primary-color);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .timeline-time {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            display: inline-block;
+            background: var(--nav-bg);
+            padding: 2px 10px;
+            border-radius: 20px;
+            border: 1px solid var(--primary-color);
+        }
+
+        .timeline-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .timeline-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+        }
+
+        .timeline-card img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .timeline-content {
+            padding: 20px;
+        }
+
+        .timeline-content h3 {
+            font-size: 20px;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+
+        .timeline-content p {
+            color: var(--text-muted);
+            font-size: 15px;
+            margin-bottom: 0;
+        }
+
+        .btn-back {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: 0.3s;
+            max-width: 250px;
+            margin: 0 auto;
+        }
+
+        .btn-back:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* 頁尾 */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--nav-bg);
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">CSIM <span>資訊管理學會</span></a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">首頁</a></li>
+                    <li><a href="about.html">關於學會</a></li>
+                    <li><a href="departments.html">各校資管</a></li>
+                    <li><a href="publications.html">研究出版</a></li>
+                    <li><a href="contact.html">聯絡我們</a></li>
+                    <li><a href="galleries.html">活動花絮</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <button id="darkModeToggle" class="btn-icon">🌙</button>
+                <a href="login.html"><button class="btn-primary">登入 / 註冊</button></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="album-wrapper">
+        <!-- 麵包屑導覽 -->
+        <div class="breadcrumb">
+            <a href="index.html">首頁</a> &gt; <a href="galleries.html">活動花絮</a> &gt; 北區主管聯席會議
+        </div>
+
+        <!-- 標頭資訊 -->
+        <div class="album-header">
+            <h1 class="album-title">大專院校資訊管理系所主管聯席會議 (北區)</h1>
+            <div class="album-meta">
+                <span>📅 日期：2016 年 4 月 14 日</span>
+                <span>👥 參與對象：北區大專院校資管系主任與所長</span>
+            </div>
+        </div>
+
+        <!-- 時間軸排版 -->
+        <div class="timeline">
+            
+            <!-- 節點 1 -->
+            <div class="timeline-item">
+                <div class="timeline-time">🕒 13:30 - 報到與會前交流</div>
+                <div class="timeline-card">
+                    <img src="https://www.csim.org.tw/sites/default/files/20160318_134922.jpg" alt="報到與交流">
+                    <div class="timeline-content">
+                        <h3>會議報到與學者相見歡</h3>
+                        <p>北區各校資訊管理系所主管陸續抵達會場。在會議正式開始前，與會代表們進行了熱絡的茶敘交流，分享各校近期的教學與研究近況。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 節點 2 -->
+            <div class="timeline-item">
+                <div class="timeline-time">🕒 14:00 - 主席致詞與專題分享</div>
+                <div class="timeline-card">
+                    <img src="https://www.csim.org.tw/sites/default/files/20160318_150439_001.jpg" alt="主席致詞">
+                    <div class="timeline-content">
+                        <h3>資管教育的挑戰與轉型契機</h3>
+                        <p>會議由學會理事長開場致詞，並邀請業界專家進行短講，探討在數據科學與雲端技術快速崛起的時代，資管系所應如何調整課綱以接軌產業需求。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 節點 3 -->
+            <div class="timeline-item">
+                <div class="timeline-time">🕒 15:00 - 綜合座談與意見交流</div>
+                <div class="timeline-card">
+                    <img src="https://www.csim.org.tw/sites/default/files/20160318_152133.jpg" alt="綜合座談">
+                    <div class="timeline-content">
+                        <h3>各校系所發展現況與經驗分享</h3>
+                        <p>進入會議核心環節，各校主管輪流發言，針對招生策略、產學合作計畫推動，以及跨領域學程的設立等議題，進行了深入且坦誠的經驗交換。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 節點 4 -->
+            <div class="timeline-item">
+                <div class="timeline-time">🕒 16:30 - 圓滿落幕合影留念</div>
+                <div class="timeline-card">
+                    <img src="https://www.csim.org.tw/sites/default/files/20160318_155501.jpg" alt="全體大合照">
+                    <div class="timeline-content">
+                        <h3>凝聚共識，攜手推動資管發展</h3>
+                        <p>會議在達成多項產學合作共識後圓滿結束。全體與會的系所主管與嘉賓留下珍貴的大合影，期許未來北區各校能有更多跨校資源共享的機會。</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 返回按鈕 -->
+        <a href="galleries.html" class="btn-back">&larr; 返回活動花絮列表</a>
+    </div>
+
+    <footer>
+        <p>會址：251301 新北市淡水區英專路151號（資管系辦公室）</p>
+        <p>e-mail：csim.service@gmail.com</p>
+        <p>&copy; 2026 中華民國資訊管理學會 CSIM All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // 深色模式功能
+        document.addEventListener('DOMContentLoaded', () => {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                darkModeToggle.textContent = '☀️';
+            }
+            darkModeToggle.addEventListener('click', () => {
+                if (document.body.getAttribute('data-theme') === 'dark') {
+                    document.body.removeAttribute('data-theme');
+                    darkModeToggle.textContent = '🌙'; 
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.body.setAttribute('data-theme', 'dark');
+                    darkModeToggle.textContent = '☀️'; 
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

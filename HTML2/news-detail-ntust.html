@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【徵聘教師】國立臺灣科技大學資訊工程系 - 中華民國資訊管理學會</title>
+    
+    <style>
+        /* 共用主題變數 */
+        :root {
+            --bg-color: #f4f7f6;
+            --nav-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --primary-color: #0056b3;
+            --primary-hover: #004494;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --alert-bg: #e8f4fd;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --nav-bg: #1e1e1e;
+            --text-main: #f0f0f0;
+            --text-muted: #aaaaaa;
+            --primary-color: #4da3ff;
+            --primary-hover: #73b8ff;
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+            --alert-bg: #1a2a3a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: '微軟正黑體', 'Noto Sans TC', sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 導覽列 */
+        header {
+            background-color: var(--nav-bg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .logo span {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: bold;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-actions a {
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+            border: none !important;
+            padding: 8px 16px !important;
+            border-radius: 5px !important;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover) !important;
+        }
+
+        .btn-icon {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #FFD700;
+            margin-right: 15px;
+        }
+
+        /* --- 文章內頁專屬排版 --- */
+        .article-wrapper {
+            flex-grow: 1;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .article-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .article-title {
+            font-size: 28px;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .article-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-size: 14px;
+            color: var(--text-muted);
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .tag {
+            background: #ffebee;
+            color: #c62828;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        [data-theme="dark"] .tag { background: #4a191f; color: #ff8a96; }
+
+        .article-content {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--text-main);
+        }
+
+        .article-content h3 {
+            color: var(--primary-color);
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 5px;
+        }
+
+        /* 需求專長的標籤式排版 */
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+            margin-top: 10px;
+        }
+        
+        .skill-tag {
+            background-color: var(--nav-bg);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* 自訂列表圖示 */
+        .custom-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .custom-list li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 8px;
+        }
+
+        .custom-list li::before {
+            content: "✓";
+            color: var(--primary-color);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .contact-box {
+            background-color: var(--alert-bg);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+
+        .contact-box h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .contact-box a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .contact-box a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 40px;
+            text-decoration: none;
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-back:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* 頁尾 */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--nav-bg);
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">CSIM <span>資訊管理學會</span></a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">首頁</a></li>
+                    <li><a href="about.html">關於學會</a></li>
+                    <li><a href="departments.html">各校資管</a></li>
+                    <li><a href="publications.html">研究出版</a></li>
+                    <li><a href="galleries.html">活動花絮</a></li>
+                    <li><a href="contact.html">聯絡我們</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <button id="darkModeToggle" class="btn-icon">🌙</button>
+                <a href="login.html"><button class="btn-primary">登入 / 註冊</button></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="article-wrapper">
+        <div class="breadcrumb">
+            <a href="index.html">首頁</a> &gt; <a href="index.html">最新消息</a> &gt; 各校徵才
+        </div>
+
+        <div class="article-card">
+            <h1 class="article-title">【徵聘教師】國立臺灣科技大學資訊工程系誠徵專任教師公告</h1>
+            
+            <div class="article-meta">
+                <div class="meta-item"><span class="tag">各校徵才</span></div>
+                <div class="meta-item">📅 發布日期：2026-04-21</div>
+                <div class="meta-item">👤 發布單位：csim</div>
+            </div>
+
+            <div class="article-content">
+                <h3>一、 基本資訊</h3>
+                <p><strong>職稱：</strong> 專任助理教授職級 (含) 以上。</p>
+                <p><strong>擬聘員額：</strong> 專任教師 3 名（本職缺得視成績增列候補人員 2 名，起聘日期配合本校聘用流程與相關規定）。</p>
+
+                <h3>二、 所需資格條件</h3>
+                <p>具國內外資訊、電機、電子等相關領域博士學位者。</p>
+                <p><strong>需求專長（下列研究領域者優先，但不限於此）：</strong></p>
+                <div class="skill-tags">
+                    <span class="skill-tag">AI 與資料科學</span>
+                    <span class="skill-tag">資訊安全</span>
+                    <span class="skill-tag">AR/VR</span>
+                    <span class="skill-tag">雲端運算</span>
+                </div>
+                <p><em>* 依據技術及職業教育法第 25 條，至起聘日止，應具備一年以上與任教領域相關之業界實務工作經驗。</em></p>
+
+                <h3>三、 應檢附之文件及著作</h3>
+                <ul class="custom-list">
+                    <li>個人履歷資料。</li>
+                    <li>學經歷證件影本、大學及研究所成績單。</li>
+                    <li>著作目錄及執行研究計畫目錄。</li>
+                    <li>最具代表性之著作全文影本，至多 5 篇。</li>
+                    <li>詳細可開授之課程教學大綱。</li>
+                    <li>未來之研究計畫構想書。</li>
+                    <li>至少兩封推薦函（應屆畢業者需附指導教授推薦函）。</li>
+                    <li>1 年以上與所任教領域相關且有助於教學之業界實務工作經驗証明。</li>
+                    <li>其他有助審查之文件（如得獎與專利等）。</li>
+                </ul>
+
+                <div class="contact-box">
+                    <h4>📬 寄件與聯絡方式</h4>
+                    <p><strong>收件截止日期：</strong>115 年 6 月 30 日止（以郵戳為憑，所寄資料恕不寄還）。</p>
+                    <p><strong>來函請寄：</strong>106 台北市基隆路四段 43 號<br>國立臺灣科技大學資訊工程系 金台齡主任 收</p>
+                    <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 15px 0;">
+                    <p><strong>聯絡處：</strong> 國立臺灣科技大學資訊工程系 邵秘書</p>
+                    <p><strong>電話：</strong> 02-27301080</p>
+                    <p><strong>Email：</strong> <a href="mailto:mellisa@mail.ntust.edu.tw">mellisa@mail.ntust.edu.tw</a></p>
+                    <p><strong>系所網址：</strong> <a href="http://www.csie.ntust.edu.tw" target="_blank">http://www.csie.ntust.edu.tw</a></p>
+                </div>
+            </div>
+
+            <a href="index.html" class="btn-back">&larr; 回到首頁消息列表</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>會址：251301 新北市淡水區英專路151號（資管系辦公室）</p>
+        <p>e-mail：csim.service@gmail.com</p>
+        <p>&copy; 2026 中華民國資訊管理學會 CSIM All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                darkModeToggle.textContent = '☀️';
+            }
+
+            darkModeToggle.addEventListener('click', () => {
+                const currentTheme = document.body.getAttribute('data-theme');
+                if (currentTheme === 'dark') {
+                    document.body.removeAttribute('data-theme');
+                    darkModeToggle.textContent = '🌙'; 
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.body.setAttribute('data-theme', 'dark');
+                    darkModeToggle.textContent = '☀️'; 
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

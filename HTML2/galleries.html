@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>活動花絮 - 中華民國資訊管理學會</title>
+    
+    <style>
+        /* 共用主題變數 */
+        :root {
+            --bg-color: #f4f7f6;
+            --nav-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --primary-color: #0056b3;
+            --primary-hover: #004494;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --img-placeholder: #e9ecef;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --nav-bg: #1e1e1e;
+            --text-main: #f0f0f0;
+            --text-muted: #aaaaaa;
+            --primary-color: #4da3ff;
+            --primary-hover: #73b8ff;
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+            --img-placeholder: #2a2a2a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: '微軟正黑體', 'Noto Sans TC', sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* 導覽列 */
+        header {
+            background-color: var(--nav-bg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .logo span {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: bold;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary-color);
+        }
+
+        .btn-icon {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            margin-right: 15px;
+            color: #FFD700;
+        }
+
+        .btn-primary, .btn-large {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover, .btn-large:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* 頁面標題 */
+        .page-header {
+            background: linear-gradient(135deg, #002d5e, var(--primary-color));
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+         .btn-large {
+            padding: 12px 24px;
+            font-size: 18px;
+        }
+
+        .page-header h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        /* 活動花絮區塊 */
+        .gallery-section {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* 分類按鈕 (沿用首頁風格) */
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            background: var(--nav-bg);
+            color: var(--text-main);
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* 相簿網格 */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        /* 相簿卡片 */
+        .gallery-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden; /* 確保圖片縮放時不會超出圓角 */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        /* 圖片預留區塊與縮放特效 */
+        .gallery-img {
+            width: 100%;
+            height: 220px;
+            background-color: var(--img-placeholder);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 讓假圖片有一點漸層質感 */
+        .gallery-img::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1));
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-card:hover .gallery-img::before {
+            transform: scale(1.1);
+        }
+
+        .gallery-info {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .gallery-date {
+            font-size: 13px;
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .gallery-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .gallery-link {
+            margin-top: auto;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .gallery-card:hover .gallery-link {
+            color: var(--primary-color);
+        }
+
+        /* 頁尾 */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--nav-bg);
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 導覽列 -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">CSIM <span>資訊管理學會</span></a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">首頁</a></li>
+                    <li><a href="about.html">關於學會</a></li>
+                    <li><a href="departments.html">各校資管</a></li>
+                    <li><a href="publications.html">研究出版</a></li>
+                    <li><a href="contact.html">聯絡我們</a></li>
+                    <li><a href="galleries.html" class="active">活動花絮</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <button id="darkModeToggle" class="btn-icon">🌙</button>
+                <a href="login.html">
+                    <button class="btn-primary">登入 / 註冊</button>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 頁面標題 -->
+    <div class="page-header">
+        <h2>活動花絮</h2>
+        <p>歷年國際研討會、專題競賽與學術交流活動精彩紀錄</p>
+    </div>
+
+    <!-- 活動花絮區塊 -->
+    <section class="gallery-section">
+        
+        <!-- 分類過濾器 -->
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">全部活動</button>
+            <button class="filter-btn" data-filter="conference">學術研討會</button>
+            <!-- <button class="filter-btn" data-filter="contest">創新與論文競賽</button> -->
+            <button class="filter-btn" data-filter="meeting">會務與聯席會議</button>
+        </div>
+
+        <!-- 相簿卡片網格 -->
+    <div class="gallery-grid" id="galleryGrid">
+            
+            <div class="gallery-card conference">
+                <div class="gallery-img">
+                    <img src="https://www.csim.org.tw/sites/default/files/dscn0006_diao_zheng_da_xiao_.jpg" alt="第22屆海峽兩岸研討會" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="gallery-info">
+                    <div class="gallery-date">2016 年 7 月 29 日</div>
+                    <div class="gallery-title">第22屆海峽兩岸資訊管理發展與策略學術研討會</div>
+                    <a href="gallery-detail.html" class="gallery-link">觀看相簿 &rarr;</a>
+                </div>
+            </div>
+
+            <div class="gallery-card conference">
+                <div class="gallery-img">
+                    <img src="https://www.csim.org.tw/sites/default/files/img_1165.jpg" alt="第二十七屆國際資訊管理學術研討會" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="gallery-info">
+                    <div class="gallery-date">2016 年 5 月 21 日</div>
+                    <div class="gallery-title">第二十七屆國際資訊管理學術研討會(ICIM 2016)，靜宜大學</div>
+                    <a href="gallery-detail-icim.html" class="gallery-link">觀看相簿 &rarr;</a>
+                </div>
+            </div>
+
+            <div class="gallery-card meeting">
+                <div class="gallery-img">
+                    <img src="https://www.csim.org.tw/sites/default/files/img_1170.jpg" alt="2016 資管學會理監事會議及會員代表大會" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="gallery-info">
+                    <div class="gallery-date">2016 年 5 月 21 日</div>
+                    <div class="gallery-title">2016 資管學會理監事會議及會員代表大會</div>
+                    <a href="gallery-detail-meeting.html" class="gallery-link">觀看活動紀實 &rarr;</a>
+                </div>
+            </div>
+
+            <div class="gallery-card meeting">
+                <div class="gallery-img">
+                    <img src="https://www.csim.org.tw/sites/default/files/20160318_140511.jpg" alt="2016 大專院校資訊管理系所主管聯席會議 (北區)" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="gallery-info">
+                    <div class="gallery-date">2016 年 4 月 14 日</div>
+                    <div class="gallery-title">大專院校資訊管理系所主管聯席會議 (北區)</div>
+                    <a href="gallery-detail-directors.html" class="gallery-link">觀看會議紀實 &rarr;</a>
+                </div>
+            </div>
+
+            <div class="gallery-card conference">
+                <div class="gallery-img">
+                    <img src="https://www.csim.org.tw/sites/default/files/2015-11-27_16.29.17.jpg" alt="第21屆國際資訊管理暨實務研討會(IMP 2015)，國立勤益科技大學" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="gallery-info">
+                    <div class="gallery-date">2015 年 11 月 27 日</div>
+                    <div class="gallery-title">第21屆國際資訊管理暨實務研討會(IMP 2015)，國立勤益科技大學</div>
+                    <a href="gallery-detail-imp.html" class="gallery-link">觀看相簿 &rarr;</a>
+                </div>
+            </div>
+
+            <div class="gallery-card conference">
+                <div class="gallery-img">
+                    <img src="https://www.csim.org.tw/sites/default/files/cimg2254.jpg" alt="金融研訓院雲端研討會" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="gallery-info">
+                    <div class="gallery-date">2013 年 1 月 10 日</div>
+                    <div class="gallery-title">金融研訓院雲端研討會</div>
+                    <a href="gallery-detail-finance.html" class="gallery-link">觀看相簿 &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 頁尾 -->
+    <footer>
+        <p>會址：251301 新北市淡水區英專路151號（資管系辦公室）</p>
+        <p>e-mail：csim.service@gmail.com</p>
+        <p>&copy; 2026 中華民國資訊管理學會 CSIM All Rights Reserved.</p>
+    </footer>
+
+    <!-- 深色模式記憶與相簿過濾功能 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 深色模式功能
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                darkModeToggle.textContent = '☀️';
+            }
+
+            darkModeToggle.addEventListener('click', () => {
+                const currentTheme = document.body.getAttribute('data-theme');
+                if (currentTheme === 'dark') {
+                    document.body.removeAttribute('data-theme');
+                    darkModeToggle.textContent = '🌙'; 
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.body.setAttribute('data-theme', 'dark');
+                    darkModeToggle.textContent = '☀️'; 
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+
+            // 相簿過濾功能
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const galleryCards = document.querySelectorAll('.gallery-card');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // 切換按鈕的 active 狀態
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    const filterValue = button.getAttribute('data-filter');
+
+                    // 過濾卡片
+                    galleryCards.forEach(card => {
+                        if (filterValue === 'all') {
+                            card.style.display = 'flex'; 
+                        } else if (card.classList.contains(filterValue)) {
+                            card.style.display = 'flex'; 
+                        } else {
+                            card.style.display = 'none'; 
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

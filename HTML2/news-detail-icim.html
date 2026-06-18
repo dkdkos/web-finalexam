@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【學術徵稿】ICIM 2026 暨育秀 AI 數位科技論文獎 - 中華民國資訊管理學會</title>
+    
+    <style>
+        /* 共用主題變數 */
+        :root {
+            --bg-color: #f4f7f6;
+            --nav-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --primary-color: #0056b3;
+            --primary-hover: #004494;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --table-header: #f8f9fa;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --nav-bg: #1e1e1e;
+            --text-main: #f0f0f0;
+            --text-muted: #aaaaaa;
+            --primary-color: #4da3ff;
+            --primary-hover: #73b8ff;
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+            --table-header: #222222;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: '微軟正黑體', 'Noto Sans TC', sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 導覽列 */
+        header {
+            background-color: var(--nav-bg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .logo span {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: bold;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-actions a {
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+            border: none !important;
+            padding: 8px 16px !important;
+            border-radius: 5px !important;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-icon {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #FFD700;
+            margin-right: 15px;
+        }
+
+        /* --- 文章內頁專屬排版 --- */
+        .article-wrapper {
+            flex-grow: 1;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .article-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .article-title {
+            font-size: 28px;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .article-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-size: 14px;
+            color: var(--text-muted);
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+
+        .meta-item { display: flex; align-items: center; gap: 5px; }
+        
+        .tag {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        [data-theme="dark"] .tag { background: #1a3c1e; color: #81c784; }
+
+        .article-content {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--text-main);
+        }
+
+        .article-content h3 {
+            color: var(--primary-color);
+            font-size: 20px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 10px;
+        }
+
+        .article-content p { margin-bottom: 15px; text-align: justify; }
+
+        /* 時程表格設計 */
+        .timeline-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 15px;
+        }
+
+        .timeline-table th, .timeline-table td {
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .timeline-table th {
+            background-color: var(--table-header);
+            color: var(--text-main);
+            font-weight: bold;
+            width: 30%;
+        }
+
+        /* 獎項卡片設計 */
+        .prize-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .prize-card {
+            background: var(--nav-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .prize-card h4 {
+            color: #d32f2f;
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+        [data-theme="dark"] .prize-card h4 { color: #ff5252; }
+
+        .prize-amount {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 10px 0;
+        }
+
+        .official-link {
+            display: block;
+            text-align: center;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 30px;
+            transition: 0.3s;
+        }
+
+        .official-link:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 30px;
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        .btn-back:hover { text-decoration: underline; }
+
+        /* 頁尾 */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--nav-bg);
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">CSIM <span>資訊管理學會</span></a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">首頁</a></li>
+                    <li><a href="about.html">關於學會</a></li>
+                    <li><a href="departments.html">各校資管</a></li>
+                    <li><a href="publications.html">研究出版</a></li>
+                    <li><a href="galleries.html">活動花絮</a></li>
+                    <li><a href="contact.html">聯絡我們</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <button id="darkModeToggle" class="btn-icon">🌙</button>
+                <a href="login.html"><button class="btn-primary">登入 / 註冊</button></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="article-wrapper">
+        <div class="breadcrumb">
+            <a href="index.html">首頁</a> &gt; <a href="index.html">最新消息</a> &gt; 學術徵稿
+        </div>
+
+        <div class="article-card">
+            <h1 class="article-title">[最後延長徵稿] ICIM 2026 暨育秀 AI 數位科技論文獎徵選辦法</h1>
+            
+            <div class="article-meta">
+                <div class="meta-item"><span class="tag">學術徵稿</span></div>
+                <div class="meta-item">📅 發布日期：2026-02-05</div>
+                <div class="meta-item">👤 發布單位：csim</div>
+            </div>
+
+            <div class="article-content">
+                <h3>壹、活動宗旨</h3>
+                <p>隨著人工智慧（AI）等新興數位科技快速演進，AI 已成為驅動產業升級與社會創新的核心引擎。為回應智慧化時代對前瞻研究與創新應用的需求，財團法人育秀教育基金會特設立「育秀 AI 數位科技論文獎」。</p>
+                <p>本獎項旨在鼓勵 AI 領域之卓越研究成果，強化理論與實務之連結，培育具備科技素養與創新思維的頂尖人才，並推動 AI 技術於產業、教育及公共領域之深度應用。</p>
+
+                <h3>貳、重要時程表</h3>
+                <table class="timeline-table">
+                    <tbody>
+                        <tr>
+                            <th>線上投稿開始</th>
+                            <td>2026 / 03 / 08</td>
+                        </tr>
+                        <tr>
+                            <th>論文截稿日期</th>
+                            <td><strong style="color: #d32f2f;">2026 / 04 / 10 (最後延長)</strong></td>
+                        </tr>
+                        <tr>
+                            <th>論文接受通知</th>
+                            <td>2026 / 04 / 18</td>
+                        </tr>
+                        <tr>
+                            <th>註冊繳費時間</th>
+                            <td>2026 / 05 / 04 - 05 / 08 (複審入選者須完成註冊)</td>
+                        </tr>
+                        <tr>
+                            <th>會議召開日期 (決賽)</th>
+                            <td>2026 / 05 / 16 (地點：國立臺北科技大學)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>參、獎項組別與內容</h3>
+                <p>本獎項分為「<strong>研究創新</strong>」與「<strong>應用創新</strong>」兩大組別。評審將著重於能深化學術理解、推動生成式AI、智慧製造、金融科技、數位醫療、ESG 永續管理等前瞻議題之論文。</p>
+                
+                <div class="prize-grid">
+                    <div class="prize-card">
+                        <h4>🏆 特優獎</h4>
+                        <div class="prize-amount">NT$ 100,000</div>
+                        <p style="font-size: 14px; color: var(--text-muted);">每組 1 篇</p>
+                    </div>
+                    <div class="prize-card">
+                        <h4>🥇 優等獎</h4>
+                        <div class="prize-amount">NT$ 30,000</div>
+                        <p style="font-size: 14px; color: var(--text-muted);">每組 2 篇</p>
+                    </div>
+                    <div class="prize-card">
+                        <h4>🏅 佳作獎</h4>
+                        <div class="prize-amount">NT$ 10,000</div>
+                        <p style="font-size: 14px; color: var(--text-muted);">若干篇</p>
+                    </div>
+                </div>
+                <p style="font-size: 14px; color: var(--text-muted); text-align: center;">* 若報名時共同作者有列明指導教授者，獎金分配 20% 予指導教授為原則。</p>
+
+                <h3>肆、辦理單位</h3>
+                <p><strong>主辦單位：</strong> 中華民國資訊管理學會、國立臺北科技大學資訊與財金管理系</p>
+                <p><strong>贊助單位：</strong> 財團法人育秀教育基金會</p>
+                <p><strong>聯絡窗口：</strong> AI數位科技論文獎辦公室 王先生 (service@skychainnet.com)</p>
+
+                <a href="https://icim2026.com" target="_blank" class="official-link">🌐 前往 ICIM 2026 官方網站投稿與查看詳情</a>
+            </div>
+
+            <a href="index.html" class="btn-back">&larr; 回到首頁消息列表</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>會址：251301 新北市淡水區英專路151號（資管系辦公室）</p>
+        <p>e-mail：csim.service@gmail.com</p>
+        <p>&copy; 2026 中華民國資訊管理學會 CSIM All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                darkModeToggle.textContent = '☀️';
+            }
+            darkModeToggle.addEventListener('click', () => {
+                if (document.body.getAttribute('data-theme') === 'dark') {
+                    document.body.removeAttribute('data-theme');
+                    darkModeToggle.textContent = '🌙'; 
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.body.setAttribute('data-theme', 'dark');
+                    darkModeToggle.textContent = '☀️'; 
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
